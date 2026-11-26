@@ -1,0 +1,31 @@
+{% extends 'dashboard/base.html' %}
+{% block content %}
+
+<div class="panel">
+    <div class="panel-header">
+        <h2><i class="fas fa-envelope"></i> Inbox</h2>
+        <span class="btn-link">{{ messages_list|length }} message{{ messages_list|length|pluralize }}</span>
+    </div>
+    <div class="panel-body">
+        <div class="msg-list">
+            {% for m in messages_list %}
+            <a href="{% url 'portfolio:dash_message_detail' m.pk %}"
+               class="msg-row {% if not m.is_read %}unread{% endif %}">
+                <div class="msg-avatar"><i class="fas fa-user"></i></div>
+                <div class="msg-body">
+                    <div class="msg-head">
+                        <strong>{{ m.name }}</strong>
+                        <small>{{ m.created_at|date:"M d, Y · H:i" }}</small>
+                    </div>
+                    <div class="msg-subject">{{ m.subject }}</div>
+                    <div class="msg-preview">{{ m.message|truncatewords:12 }}</div>
+                </div>
+                {% if not m.is_read %}<span class="dot-unread"></span>{% endif %}
+            </a>
+            {% empty %}
+            <p class="empty">No messages yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'dashboard/base.html' %}
+{% block content %}
+
+<div class="panel form-panel">
+    <div class="panel-header"><h2><i class="fas fa-user-circle"></i> About Section</h2></div>
+    <div class="panel-body">
+        <form method="post" class="dash-form">
+            {% csrf_token %}
+
+            <h3 class="section-divider">Background</h3>
+            <div class="form-group">{{ form.background_title.label_tag }}{{ form.background_title }}</div>
+            <div class="form-group">{{ form.background_text.label_tag }}{{ form.background_text }}</div>
+
+            <h3 class="section-divider">Mission</h3>
+            <div class="form-group">{{ form.mission_title.label_tag }}{{ form.mission_title }}</div>
+            <div class="form-group">{{ form.mission_text.label_tag }}{{ form.mission_text }}</div>
+
+            <h3 class="section-divider">Vision</h3>
+            <div class="form-group">{{ form.vision_title.label_tag }}{{ form.vision_title }}</div>
+            <div class="form-group">{{ form.vision_text.label_tag }}{{ form.vision_text }}</div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save About</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="panel-header">
+        <h2><i class="fas fa-gem"></i> Core Values</h2>
+        <a href="{% url 'portfolio:dash_value_add' %}" class="btn btn-small btn-primary">
+            <i class="fas fa-plus"></i> Add Value
+        </a>
+    </div>
+    <div class="panel-body">
+        <div class="card-grid">
+            {% for v in values %}
+            <div class="mini-card">
+                <div class="mini-icon"><i class="{{ v.icon }}"></i></div>
+                <h3>{{ v.title }}</h3>
+                <p>{{ v.description|truncatewords:15 }}</p>
+                <div class="mini-actions">
+                    <a href="{% url 'portfolio:dash_value_edit' v.pk %}" class="btn btn-small btn-ghost">
+                        <i class="fas fa-pen"></i> Edit
+                    </a>
+                    <a href="{% url 'portfolio:dash_value_delete' v.pk %}" class="btn btn-small btn-danger" onclick="return confirm('Delete this value?')">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <p class="empty">No core values yet. <a href="{% url 'portfolio:dash_value_add' %}">Add one →</a></p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

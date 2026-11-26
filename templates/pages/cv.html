@@ -1,0 +1,460 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{{ site.site_name|default:'MOLA TECH' }} — Digital Solutions Provider. View the CV of {{ cv_profile.full_name|default:'Lucky Matthew Obasanjo' }}, {{ cv_profile.job_title|default:'Software Engineer & Founder of MOLA TECH' }}.">
+    <title>CV | {{ site.site_name|default:'MOLA TECH' }} — Digital Solutions</title>
+    <link rel="shortcut icon" href="{% static 'image/mola logo.png' %}" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+          onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css'">
+    <link rel="stylesheet" href="{% static 'css/cv.css' %}">
+</head>
+
+<body>
+
+    <!-- HEADER CONTROLS -->
+    <div class="header-controls">
+        <button class="control-btn mode-toggle" id="modeToggle" aria-label="Toggle theme">
+            <i class="fas fa-moon"></i>
+        </button>
+        {% if cv_profile.cv_file %}
+        <a href="{{ cv_profile.cv_file.url }}" download class="control-btn" aria-label="Download PDF">
+            <i class="fas fa-download"></i> Download PDF
+        </a>
+        {% else %}
+        <button class="control-btn" id="downloadBtn" aria-label="Download PDF">
+            <i class="fas fa-download"></i> Download PDF
+        </button>
+        {% endif %}
+    </div>
+
+    <!-- NAV -->
+    <nav class="nav-container">
+        <ul class="nav-menu">
+            <li><a href="{% url 'portfolio:index' %}" class="nav-link">Home</a></li>
+            <li><a href="{% url 'portfolio:portfolio' %}" class="nav-link">Portfolio</a></li>
+            <li><a href="#services" class="nav-link" data-page="services">Services</a></li>
+            <li><a href="#contact" class="nav-link" data-page="contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- ============================== -->
+    <!-- HOME PAGE (CV resume)          -->
+    <!-- ============================== -->
+    <div id="home" class="page active">
+        <div class="resume">
+
+            <!-- ============ LEFT COLUMN ============ -->
+            <div class="left">
+
+                <!-- Profile / Logo -->
+                <div class="profile">
+                    <div class="logo-container">
+                        {% if cv_profile.photo %}
+                            <img src="{{ cv_profile.photo.url }}" alt="{{ cv_profile.full_name }}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+                        {% else %}
+                            <i class="fas fa-cogs"></i>
+                        {% endif %}
+                    </div>
+                    <h2 style="margin-top: 20px;">{{ site.site_name|default:"MOLA TECH" }}</h2>
+                    <p style="font-size: 14px; margin-top: 5px; color: #ccc;">
+                        {{ site.tagline|default:"Digital Solutions Provider" }}
+                    </p>
+                </div>
+
+                <!-- Contact -->
+                <div class="section-title">CONTACT</div>
+                {% if cv_profile.phone_primary %}
+                <div class="contact-item"><i class="fa-solid fa-phone"></i> {{ cv_profile.phone_primary }}</div>
+                {% endif %}
+                {% if cv_profile.phone_secondary %}
+                <div class="contact-item"><i class="fa-solid fa-phone"></i> {{ cv_profile.phone_secondary }}</div>
+                {% endif %}
+                <div class="contact-item">
+                    <i class="fa-solid fa-envelope"></i>
+                    {{ cv_profile.email|default:site.email|default:"molatech6784@gmail.com" }}
+                </div>
+                <div class="contact-item">
+                    <i class="fa-solid fa-location-dot"></i>
+                    {{ cv_profile.location|default:site.location|default:"Nigeria" }}
+                </div>
+                {% if cv_profile.website %}
+                <div class="contact-item"><i class="fa-solid fa-globe"></i> {{ cv_profile.website }}</div>
+                {% endif %}
+
+                <!-- Skills -->
+                <div class="section-title">SKILLS</div>
+                <ul>
+                    {% if skills %}
+                        {% for skill in skills %}
+                        <li>{{ skill.name }}</li>
+                        {% endfor %}
+                    {% else %}
+                        <li>Web Development</li>
+                        <li>Software Solutions</li>
+                        <li>UI / UX Design</li>
+                        <li>Robotics &amp; AI</li>
+                        <li>Digital Branding</li>
+                        <li>Graphics &amp; 3D Design</li>
+                        <li>Mobile Apps</li>
+                        <li>Cloud Solutions</li>
+                        <li>Training &amp; Mentoring</li>
+                    {% endif %}
+                </ul>
+
+                <!-- Languages -->
+                {% if languages %}
+                <div class="section-title">LANGUAGES</div>
+                <ul>
+                    {% for lang in languages %}
+                    <li>{{ lang.name }} - {{ lang.get_level_display }}</li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <div class="section-title">LANGUAGES</div>
+                <ul>
+                    <li>English - Fluent</li>
+                    <li>French - Intermediate</li>
+                    <li>Hausa - Native</li>
+                </ul>
+                {% endif %}
+
+                <!-- Certifications -->
+                {% if certifications %}
+                <div class="section-title">CERTIFICATIONS</div>
+                <ul>
+                    {% for cert in certifications %}
+                    <li>{{ cert.name }}</li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <div class="section-title">CERTIFICATIONS</div>
+                <ul>
+                    <li>Google Cloud Certified</li>
+                    <li>AWS Solutions Architect</li>
+                    <li>Microsoft Azure Fundamentals</li>
+                </ul>
+                {% endif %}
+            </div>
+
+            <!-- ============ RIGHT COLUMN ============ -->
+            <div class="right">
+
+                <!-- Header name -->
+                <div class="name">
+                    <span>{{ cv_profile.full_name|default:"MOLA TECH" }}</span>
+                </div>
+                <div class="divider"></div>
+                <div class="title">{{ cv_profile.job_title|default:"SOFTWARE & DIGITAL SOLUTIONS" }}</div>
+
+                <!-- Summary -->
+                <p class="summary">
+                    {{ cv_profile.summary|default:"MOLA TECH is a technology-driven brand providing modern software, web development, and digital solutions for businesses and individuals. Focused on quality, performance, and innovation. We deliver cutting-edge solutions that drive growth and enhance user experiences across multiple platforms." }}
+                </p>
+
+                <!-- Experience -->
+                <div class="right-section">
+                    <h2>EXPERIENCE</h2>
+
+                    {% if experiences %}
+                        {% for exp in experiences %}
+                        <div class="job">
+                            <h3>{{ exp.role }}</h3>
+                            <span>{{ exp.company }} | {{ exp.start_date }} – {{ exp.end_date|default:"Present" }}</span>
+                            {% if exp.bullet_list %}
+                            <ul>
+                                {% for bullet in exp.bullet_list %}
+                                <li>{{ bullet }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% elif exp.description %}
+                            <p>{{ exp.description }}</p>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="job">
+                            <h3>Founder &amp; Lead Developer</h3>
+                            <span>MOLA TECH | 2020 – Present</span>
+                            <ul>
+                                <li>Developed responsive websites and applications for 50+ clients.</li>
+                                <li>Provided IT solutions and system maintenance for small to medium businesses.</li>
+                                <li>Designed user-friendly interfaces with a focus on accessibility.</li>
+                                <li>Managed cloud migration projects for improved scalability.</li>
+                            </ul>
+                        </div>
+                        <div class="job">
+                            <h3>Senior Web Developer</h3>
+                            <span>Tech Solutions Inc. | 2018 – 2020</span>
+                            <ul>
+                                <li>Led front-end development for e-commerce platforms.</li>
+                                <li>Optimized web performance resulting in 40% faster load times.</li>
+                                <li>Mentored junior developers in modern JavaScript frameworks.</li>
+                            </ul>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Education -->
+                <div class="right-section">
+                    <h2>EDUCATION</h2>
+
+                    {% if educations %}
+                        {% for edu in educations %}
+                        <div class="job">
+                            <h3>{{ edu.degree }}</h3>
+                            <span>{{ edu.institution }} | {{ edu.start_year }} – {{ edu.end_year|default:"Present" }}</span>
+                            {% if edu.description %}
+                            <p>{{ edu.description }}</p>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="job">
+                            <h3>B.Sc. Computer Science</h3>
+                            <span>University of Lagos | 2014 – 2018</span>
+                            <p>Graduated with First Class Honors</p>
+                        </div>
+                        <div class="job">
+                            <h3>Professional Certifications</h3>
+                            <span>Google, AWS, Microsoft | 2019 – 2023</span>
+                            <p>Multiple cloud and development certifications</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================== -->
+    <!-- PORTFOLIO PAGE (inner panel)   -->
+    <!-- ============================== -->
+    <div id="portfolio" class="page">
+        <div class="resume" style="flex-direction: column; padding: 40px;">
+            <h1 style="margin-bottom: 10px;">Our <span style="color: var(--primary);">Portfolio</span></h1>
+            <div class="divider" style="margin: 0 0 30px 0;"></div>
+            <p style="margin-bottom: 30px; color: var(--text-light);">A showcase of our recent projects and digital solutions</p>
+
+            <div class="portfolio-grid">
+                {% if projects %}
+                    {% for project in projects|slice:":4" %}
+                    <div class="portfolio-item">
+                        <div class="portfolio-img">
+                            {% if project.image %}
+                            <img src="{{ project.image.url }}" alt="{{ project.title }}" style="width:100%;height:100%;object-fit:cover;">
+                            {% else %}
+                            <i class="{{ project.icon|default:'fas fa-palette' }}"></i>
+                            {% endif %}
+                        </div>
+                        <div class="portfolio-content">
+                            <h3>{{ project.title }}</h3>
+                            <p>{{ project.description|truncatewords:20 }}</p>
+                            {% if project.technologies %}
+                            <p><strong>Technologies:</strong> {{ project.technologies }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="portfolio-item">
+                        <div class="portfolio-img"><i class="fas fa-shopping-cart"></i></div>
+                        <div class="portfolio-content">
+                            <h3>E-Commerce Platform</h3>
+                            <p>Full-stack e-commerce solution with payment integration, inventory management, and responsive design.</p>
+                            <p><strong>Technologies:</strong> React, Node.js, MongoDB, Stripe API</p>
+                        </div>
+                    </div>
+                    <div class="portfolio-item">
+                        <div class="portfolio-img"><i class="fas fa-mobile-alt"></i></div>
+                        <div class="portfolio-content">
+                            <h3>Fitness Mobile App</h3>
+                            <p>Cross-platform fitness tracking application with workout plans, progress tracking, and social features.</p>
+                            <p><strong>Technologies:</strong> React Native, Firebase, Google Fit API</p>
+                        </div>
+                    </div>
+                    <div class="portfolio-item">
+                        <div class="portfolio-img"><i class="fas fa-chart-line"></i></div>
+                        <div class="portfolio-content">
+                            <h3>Business Analytics Dashboard</h3>
+                            <p>Real-time data visualization dashboard for business intelligence and decision making.</p>
+                            <p><strong>Technologies:</strong> Vue.js, D3.js, Python, PostgreSQL</p>
+                        </div>
+                    </div>
+                    <div class="portfolio-item">
+                        <div class="portfolio-img"><i class="fas fa-university"></i></div>
+                        <div class="portfolio-content">
+                            <h3>Banking Portal</h3>
+                            <p>Secure online banking portal with multi-factor authentication and financial management tools.</p>
+                            <p><strong>Technologies:</strong> Angular, Java Spring Boot, MySQL, OAuth 2.0</p>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div style="margin-top: 30px; text-align: center;">
+                <a href="{% url 'portfolio:portfolio' %}" class="btn-primary" style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:var(--primary);color:#fff;border-radius:8px;text-decoration:none;font-weight:600;">
+                    View Full Portfolio <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================== -->
+    <!-- SERVICES PAGE (inner panel)    -->
+    <!-- ============================== -->
+    <div id="services" class="page">
+        <div class="resume" style="flex-direction: column; padding: 40px;">
+            <h1 style="margin-bottom: 10px;">Our <span style="color: var(--primary);">Services</span></h1>
+            <div class="divider" style="margin: 0 0 30px 0;"></div>
+            <p style="margin-bottom: 30px; color: var(--text-light);">Comprehensive digital solutions tailored to your business needs</p>
+
+            <div class="services-grid">
+                {% if services %}
+                    {% for service in services %}
+                    <div class="service-card">
+                        <div class="service-icon"><i class="{{ service.icon|default:'fas fa-cog' }}"></i></div>
+                        <h3>{{ service.title }}</h3>
+                        <p>{{ service.description }}</p>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="service-card">
+                        <div class="service-icon"><i class="fas fa-code"></i></div>
+                        <h3>Web Development</h3>
+                        <p>Custom websites and web applications built with modern technologies, responsive design, and SEO optimization.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon"><i class="fas fa-mobile-alt"></i></div>
+                        <h3>Mobile App Development</h3>
+                        <p>Native and cross-platform mobile applications for iOS and Android with intuitive user interfaces.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon"><i class="fas fa-palette"></i></div>
+                        <h3>UI/UX Design</h3>
+                        <p>User-centered design approach creating engaging and accessible digital experiences.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon"><i class="fas fa-robot"></i></div>
+                        <h3>Robotics &amp; AI</h3>
+                        <p>Automation, AI integration, and robotics engineering for smart business solutions.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon"><i class="fas fa-cloud"></i></div>
+                        <h3>Cloud Solutions</h3>
+                        <p>Cloud migration, architecture design, and managed services for scalable infrastructure.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                        <h3>Training &amp; Classes</h3>
+                        <p>Physical and online tech training for beginners and professionals in modern technologies.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================== -->
+    <!-- CONTACT PAGE (inner panel)     -->
+    <!-- ============================== -->
+    <div id="contact" class="page">
+        <div class="resume" style="flex-direction: column; padding: 40px;">
+            <h1 style="margin-bottom: 10px;">Get In <span style="color: var(--primary);">Touch</span></h1>
+            <div class="divider" style="margin: 0 0 30px 0;"></div>
+            <p style="margin-bottom: 30px; color: var(--text-light);">Let's discuss how we can bring your digital vision to life</p>
+
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h3 style="margin-bottom: 20px; color: var(--primary);">Contact Information</h3>
+
+                    {% if site.phone_primary %}
+                    <div class="contact-item"><i class="fa-solid fa-phone"></i> {{ site.phone_primary }}</div>
+                    {% else %}
+                    <div class="contact-item"><i class="fa-solid fa-phone"></i> +234 902 255 6784</div>
+                    {% endif %}
+
+                    {% if site.phone_secondary %}
+                    <div class="contact-item"><i class="fa-solid fa-phone"></i> {{ site.phone_secondary }}</div>
+                    {% else %}
+                    <div class="contact-item"><i class="fa-solid fa-phone"></i> +234 913 138 8402</div>
+                    {% endif %}
+
+                    <div class="contact-item"><i class="fa-solid fa-envelope"></i> {{ site.email|default:"molatech6784@gmail.com" }}</div>
+                    <div class="contact-item"><i class="fa-solid fa-location-dot"></i> {{ site.location|default:"Nigeria" }}</div>
+                    <div class="contact-item"><i class="fa-solid fa-clock"></i> {{ site.working_hours|default:"Mon - Fri: 9:00 AM - 4:00 PM" }}</div>
+
+                    <div style="margin-top: 30px;">
+                        <h4 style="margin-bottom: 15px; color: var(--primary);">Follow Us</h4>
+                        <div style="display: flex; gap: 15px; font-size: 20px;">
+                            {% if site.whatsapp_url %}<a href="{{ site.whatsapp_url }}" target="_blank" rel="noopener" aria-label="WhatsApp" style="color: var(--text);"><i class="fab fa-whatsapp"></i></a>{% endif %}
+                            {% if site.linkedin_url %}<a href="{{ site.linkedin_url }}" target="_blank" rel="noopener" aria-label="LinkedIn" style="color: var(--text);"><i class="fab fa-linkedin"></i></a>{% endif %}
+                            {% if site.instagram_url %}<a href="{{ site.instagram_url }}" target="_blank" rel="noopener" aria-label="Instagram" style="color: var(--text);"><i class="fab fa-instagram"></i></a>{% endif %}
+                            {% if site.facebook_url %}<a href="{{ site.facebook_url }}" target="_blank" rel="noopener" aria-label="Facebook" style="color: var(--text);"><i class="fab fa-facebook"></i></a>{% endif %}
+                            {% if site.twitter_url %}<a href="{{ site.twitter_url }}" target="_blank" rel="noopener" aria-label="Twitter" style="color: var(--text);"><i class="fab fa-twitter"></i></a>{% endif %}
+                            {% if site.github_url %}<a href="{{ site.github_url }}" target="_blank" rel="noopener" aria-label="GitHub" style="color: var(--text);"><i class="fab fa-github"></i></a>{% endif %}
+                            {% if site.youtube_url %}<a href="{{ site.youtube_url }}" target="_blank" rel="noopener" aria-label="YouTube" style="color: var(--text);"><i class="fab fa-youtube"></i></a>{% endif %}
+                            {% if site.tiktok_url %}<a href="{{ site.tiktok_url }}" target="_blank" rel="noopener" aria-label="TikTok" style="color: var(--text);"><i class="fab fa-tiktok"></i></a>{% endif %}
+
+                            {# Fallback socials if none set #}
+                            {% if not site.whatsapp_url and not site.linkedin_url and not site.instagram_url and not site.facebook_url %}
+                            <a href="https://wa.me/2349131388402" target="_blank" rel="noopener" aria-label="WhatsApp" style="color: var(--text);"><i class="fab fa-whatsapp"></i></a>
+                            <a href="https://www.linkedin.com/in/matthew-lucky-588954292/" target="_blank" rel="noopener" aria-label="LinkedIn" style="color: var(--text);"><i class="fab fa-linkedin"></i></a>
+                            <a href="https://www.instagram.com/mola_234.matthew/?hl=en" target="_blank" rel="noopener" aria-label="Instagram" style="color: var(--text);"><i class="fab fa-instagram"></i></a>
+                            <a href="https://web.facebook.com/profile.php?id=61573498528512" target="_blank" rel="noopener" aria-label="Facebook" style="color: var(--text);"><i class="fab fa-facebook"></i></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <form class="contact-form" id="cvContactForm" method="POST" action="{% url 'portfolio:contact' %}">
+                    {% csrf_token %}
+                    <h3 style="margin-bottom: 20px; color: var(--primary);">Send a Message</h3>
+
+                    {% if messages %}
+                    <div class="messages" style="margin-bottom:16px;">
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}" style="padding:12px 16px;border-radius:8px;font-size:0.9rem;background:rgba(34,197,94,0.1);color:#16a34a;border:1px solid rgba(34,197,94,0.3);">
+                            <i class="fa-solid fa-check-circle"></i> {{ message }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="form-group">
+                        <label for="id_name">Full Name</label>
+                        <input type="text" id="id_name" name="name" placeholder="Enter your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_email">Email Address</label>
+                        <input type="email" id="id_email" name="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_subject">Subject</label>
+                        <input type="text" id="id_subject" name="subject" placeholder="What is this regarding?" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_message">Message</label>
+                        <textarea id="id_message" name="message" rows="5" placeholder="Tell us about your project..." required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">
+                        <span>Send Message</span> <i class="fas fa-paper-plane"></i>
+                    </button>
+                    <div class="form-status" id="cvFormStatus" style="margin-top:12px;font-size:14px;font-weight:600;"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <p>&copy; <span id="year">2025</span> {{ site.site_name|default:"MOLA TECH" }}. All rights reserved. | {{ site.about_summary|default:"Crafting digital excellence." }}</p>
+    </div>
+
+    <script src="{% static 'js/cv.js' %}"></script>
+
+</body>
+
+</html>

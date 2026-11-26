@@ -1,0 +1,27 @@
+{% extends 'dashboard/base.html' %}
+{% block content %}
+
+<div class="panel">
+    <div class="panel-header">
+        <h2><i class="fas fa-envelope-open"></i> {{ msg.subject }}</h2>
+        <a href="{% url 'portfolio:dash_messages' %}" class="btn-link">
+            <i class="fas fa-arrow-left"></i> Back to Inbox
+        </a>
+    </div>
+    <div class="panel-body">
+        <div class="msg-meta">
+            <div><strong>From:</strong> {{ msg.name }} &lt;{{ msg.email }}&gt;</div>
+            <div><strong>Date:</strong> {{ msg.created_at|date:"F d, Y H:i" }}</div>
+        </div>
+        <div class="msg-content">{{ msg.message|linebreaks }}</div>
+        <div class="form-actions">
+            <a href="mailto:{{ msg.email }}?subject=Re: {{ msg.subject }}" class="btn btn-primary">
+                <i class="fas fa-reply"></i> Reply via Email
+            </a>
+            <a href="{% url 'portfolio:dash_message_delete' msg.pk %}" class="btn btn-danger" onclick="return confirm('Delete this message?')">
+                <i class="fas fa-trash"></i> Delete
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'dashboard/base.html' %}
+{% block content %}
+
+<div class="panel">
+    <div class="panel-header">
+        <h2><i class="fas fa-quote-right"></i> Testimonials</h2>
+        <a href="{% url 'portfolio:dash_testimonial_add' %}" class="btn btn-small btn-primary">
+            <i class="fas fa-plus"></i> Add Testimonial
+        </a>
+    </div>
+    <div class="panel-body">
+        <div class="card-grid">
+            {% for t in testimonials %}
+            <div class="mini-card">
+                <div class="testi-head">
+                    <div class="testi-avatar">
+                        {% if t.avatar %}<img src="{{ t.avatar.url }}" alt="">{% else %}<i class="fas fa-user"></i>{% endif %}
+                    </div>
+                    <div>
+                        <strong>{{ t.name }}</strong>
+                        <small>{{ t.role }}</small>
+                    </div>
+                </div>
+                <p class="testi-msg">"{{ t.message|truncatewords:20 }}"</p>
+                <div class="mini-actions">
+                    <a href="{% url 'portfolio:dash_testimonial_edit' t.pk %}" class="btn btn-small btn-ghost">
+                        <i class="fas fa-pen"></i> Edit
+                    </a>
+                    <a href="{% url 'portfolio:dash_testimonial_delete' t.pk %}" class="btn btn-small btn-danger" onclick="return confirm('Delete this testimonial?')">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <p class="empty">No testimonials yet. <a href="{% url 'portfolio:dash_testimonial_add' %}">Add one →</a></p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

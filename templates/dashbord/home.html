@@ -1,0 +1,202 @@
+{% extends 'dashboard/base.html' %}
+{% block content %}
+
+<!-- Welcome Banner -->
+<div class="welcome-banner">
+    <div class="welcome-text">
+        <h2>Welcome back, {{ request.user.username }} 👋</h2>
+        <p>
+            You have <strong>{{ counts.unread }} unread message{{ counts.unread|pluralize }}</strong>
+            and <strong>{{ counts.projects }} project{{ counts.projects|pluralize }}</strong> in your portfolio.
+        </p>
+        <div class="welcome-actions">
+            <a href="{% url 'portfolio:dash_project_add' %}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Add New Project
+            </a>
+            <a href="{% url 'portfolio:index' %}" target="_blank" class="btn btn-ghost">
+                <i class="fas fa-eye"></i> View Live Site
+            </a>
+        </div>
+    </div>
+    <div class="welcome-illustration"><i class="fas fa-chart-line"></i></div>
+</div>
+
+<!-- Stat Cards -->
+<div class="stat-grid">
+    <a href="{% url 'portfolio:dash_portfolio' %}" class="stat-card" style="text-decoration:none;">
+        <div class="stat-icon bg-orange"><i class="fas fa-briefcase"></i></div>
+        <div class="stat-info">
+            <span class="stat-label">Projects</span>
+            <h3>{{ counts.projects }}</h3>
+            <span class="stat-trend up"><i class="fas fa-arrow-right"></i> Manage</span>
+        </div>
+    </a>
+    <a href="{% url 'portfolio:dash_services' %}" class="stat-card" style="text-decoration:none;">
+        <div class="stat-icon bg-blue"><i class="fas fa-cogs"></i></div>
+        <div class="stat-info">
+            <span class="stat-label">Services</span>
+            <h3>{{ counts.services }}</h3>
+            <span class="stat-trend up"><i class="fas fa-arrow-right"></i> Manage</span>
+        </div>
+    </a>
+    <a href="{% url 'portfolio:dash_testimonials' %}" class="stat-card" style="text-decoration:none;">
+        <div class="stat-icon bg-green"><i class="fas fa-quote-right"></i></div>
+        <div class="stat-info">
+            <span class="stat-label">Testimonials</span>
+            <h3>{{ counts.testimonials }}</h3>
+            <span class="stat-trend up"><i class="fas fa-arrow-right"></i> Manage</span>
+        </div>
+    </a>
+    <a href="{% url 'portfolio:dash_messages' %}" class="stat-card" style="text-decoration:none;">
+        <div class="stat-icon bg-red"><i class="fas fa-envelope"></i></div>
+        <div class="stat-info">
+            <span class="stat-label">Unread Messages</span>
+            <h3>{{ counts.unread }}</h3>
+            <span class="stat-trend down"><i class="fas fa-arrow-right"></i> Inbox</span>
+        </div>
+    </a>
+</div>
+
+<!-- Two column row -->
+<div class="two-col">
+
+    <!-- Recent Projects -->
+    <div class="panel">
+        <div class="panel-header">
+            <h2><i class="fas fa-briefcase"></i> Recent Projects</h2>
+            <a href="{% url 'portfolio:dash_portfolio' %}" class="btn-link">View All <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="panel-body">
+            <ul class="activity-list">
+                {% for p in recent_projects %}
+                <li>
+                    <div class="act-icon bg-orange"><i class="{{ p.icon|default:'fas fa-palette' }}"></i></div>
+                    <div class="act-body">
+                        <strong>{{ p.title }}</strong>
+                        <small>{{ p.get_category_display }} · {{ p.created_at|timesince }} ago</small>
+                    </div>
+                    <a href="{% url 'portfolio:dash_project_edit' p.pk %}" class="btn-icon" title="Edit">
+                        <i class="fas fa-pen"></i>
+                    </a>
+                </li>
+                {% empty %}
+                <li><p class="empty">No projects yet. <a href="{% url 'portfolio:dash_project_add' %}">Add one →</a></p></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Recent Messages -->
+    <div class="panel">
+        <div class="panel-header">
+            <h2><i class="fas fa-envelope"></i> Recent Messages</h2>
+            <a href="{% url 'portfolio:dash_messages' %}" class="btn-link">Inbox <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="panel-body">
+            <ul class="activity-list">
+                {% for m in recent_messages %}
+                <li>
+                    <div class="act-icon bg-blue"><i class="fas fa-user"></i></div>
+                    <div class="act-body">
+                        <strong>{{ m.name }}</strong>
+                        <small>{{ m.subject|truncatechars:40 }}</small>
+                    </div>
+                    <span class="tag {% if not m.is_read %}tag-new{% else %}tag-read{% endif %}">
+                        {% if not m.is_read %}New{% else %}Read{% endif %}
+                    </span>
+                </li>
+                {% empty %}
+                <li><p class="empty">No messages yet.</p></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="panel">
+    <div class="panel-header">
+        <h2><i class="fas fa-bolt"></i> Quick Actions</h2>
+    </div>
+    <div class="panel-body">
+        <div class="action-grid">
+            <a href="{% url 'portfolio:dash_project_add' %}" class="action-card">
+                <i class="fas fa-plus-circle"></i><span>Add Project</span>
+            </a>
+            <a href="{% url 'portfolio:dash_service_add' %}" class="action-card">
+                <i class="fas fa-concierge-bell"></i><span>Add Service</span>
+            </a>
+            <a href="{% url 'portfolio:dash_testimonial_add' %}" class="action-card">
+                <i class="fas fa-quote-left"></i><span>Add Testimonial</span>
+            </a>
+            <a href="{% url 'portfolio:dash_hero' %}" class="action-card">
+                <i class="fas fa-rocket"></i><span>Edit Hero</span>
+            </a>
+            <a href="{% url 'portfolio:dash_cv' %}" class="action-card">
+                <i class="fas fa-file-alt"></i><span>Edit CV</span>
+            </a>
+            <a href="{% url 'portfolio:dash_contact_info' %}" class="action-card">
+                <i class="fas fa-address-book"></i><span>Contact Info</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Bottom analytics -->
+<div class="two-col">
+    <div class="panel">
+        <div class="panel-header">
+            <h2><i class="fas fa-chart-bar"></i> Projects by Category</h2>
+        </div>
+        <div class="panel-body">
+            <div class="category-bars">
+                {% with total=counts.projects|default:1 %}
+                <div class="cat-row">
+                    <span class="cat-label"><i class="fas fa-palette"></i> Graphics</span>
+                    <div class="cat-bar"><div class="cat-fill" style="width: 45%; background: var(--gradient);"></div></div>
+                    <span class="cat-val">—</span>
+                </div>
+                <div class="cat-row">
+                    <span class="cat-label"><i class="fas fa-laptop-code"></i> Software</span>
+                    <div class="cat-bar"><div class="cat-fill" style="width: 36%; background: linear-gradient(135deg,#3b82f6,#60a5fa);"></div></div>
+                    <span class="cat-val">—</span>
+                </div>
+                <div class="cat-row">
+                    <span class="cat-label"><i class="fas fa-cogs"></i> Robotics</span>
+                    <div class="cat-bar"><div class="cat-fill" style="width: 27%; background: linear-gradient(135deg,#10b981,#34d399);"></div></div>
+                    <span class="cat-val">—</span>
+                </div>
+                {% endwith %}
+            </div>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-header">
+            <h2><i class="fas fa-clock"></i> Recent Activity</h2>
+        </div>
+        <div class="panel-body">
+            <div class="timeline">
+                {% for p in recent_projects|slice:":4" %}
+                <div class="timeline-item">
+                    <div class="tl-dot bg-orange"></div>
+                    <div class="tl-body">
+                        <strong>{{ p.title }} added</strong>
+                        <small>{{ p.get_category_display }} · {{ p.created_at|timesince }} ago</small>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="timeline-item">
+                    <div class="tl-dot bg-orange"></div>
+                    <div class="tl-body">
+                        <strong>No activity yet</strong>
+                        <small>Start by adding a project</small>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

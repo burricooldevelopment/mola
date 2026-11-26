@@ -1,0 +1,692 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="{{ site.site_name|default:'MOLA TECH' }} — {{ site.tagline|default:'Where Art Meets Code' }}. Specializing in Robotics, AI, Web & App Development, Graphics & 3D Design." />
+    <title>Portfolio | {{ site.site_name|default:'MOLA TECH' }}</title>
+    <script>document.documentElement.classList.add('js');</script>
+    <link rel="shortcut icon" href="{% static 'image/mola logo.png' %}" type="image/png" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <!-- ✅ Bootstrap Icons — reliable, no SRI, no CSP issues -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+    <link rel="stylesheet" href="{% static 'css/portfolio.css' %}" />
+</head>
+
+<body>
+
+    <!-- PRELOADER -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-inner">
+            <img src="{% static 'image/mola logo.png' %}" alt="Loading" />
+            <div class="loader-bar"><span></span></div>
+        </div>
+    </div>
+
+    <!-- SCROLL PROGRESS -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- CUSTOM CURSOR (desktop only) -->
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <!-- HEADER / NAVBAR -->
+    <header class="header" id="header">
+        <nav class="navbar container">
+            <a href="{% url 'portfolio:index' %}" class="logo">
+                <img src="{% static 'image/mola logo.png' %}" alt="{{ site.site_name|default:'MOLA TECH' }}" width="34" />
+                <span>MOLA <em>TECH</em></span>
+            </a>
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="{% url 'portfolio:index' %}" class="nav-link">Home</a></li>
+                <li><a href="{% url 'portfolio:index' %}#services" class="nav-link">Services</a></li>
+                <li><a href="{% url 'portfolio:index' %}#about" class="nav-link">About</a></li>
+                <li><a href="{% url 'portfolio:portfolio' %}" class="nav-link active">Portfolio</a></li>
+                <li><a href="{% url 'portfolio:cv' %}" class="nav-link">CV</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+                    <i class="bi bi-moon-stars"></i>
+                </button>
+                <a href="#contact" class="btn-nav">Hire Me</a>
+                <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero section" id="home">
+        <div class="hero-bg">
+            <div class="orb orb-1"></div>
+            <div class="orb orb-2"></div>
+            <div class="orb orb-3"></div>
+            <div class="grid-overlay"></div>
+        </div>
+
+        <div class="container hero-inner">
+            <div class="hero-left">
+                <p class="hello"><span class="wave">👋</span> Hi, I am</p>
+                <h2 class="name">{{ cv_profile.full_name|default:"Lucky Matthew Obasanjo" }}</h2>
+                <h1 class="title">
+                    <span class="typed-text" id="typedText"></span>
+                    <span class="cursor-blink">|</span>
+                </h1>
+                <p class="hero-desc">
+                    Founder of <strong>{{ site.site_name|default:"MOLA TECH" }}</strong> — building future minds through
+                    Robotics, AI, Web &amp; App Development, and stunning Digital Design.
+                </p>
+
+                <div class="social-icons">
+                    {% if site.instagram_url %}<a href="{{ site.instagram_url }}" target="_blank" rel="noopener" aria-label="Instagram"><i class="bi bi-instagram"></i></a>{% endif %}
+                    {% if site.linkedin_url %}<a href="{{ site.linkedin_url }}" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>{% endif %}
+                    {% if site.whatsapp_url %}<a href="{{ site.whatsapp_url }}" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>{% endif %}
+                    {% if site.facebook_url %}<a href="{{ site.facebook_url }}" target="_blank" rel="noopener" aria-label="Facebook"><i class="bi bi-facebook"></i></a>{% endif %}
+                    {% if site.github_url %}<a href="{{ site.github_url }}" target="_blank" rel="noopener" aria-label="GitHub"><i class="bi bi-github"></i></a>{% endif %}
+                    {% if site.twitter_url %}<a href="{{ site.twitter_url }}" target="_blank" rel="noopener" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>{% endif %}
+                    {% if site.phone_primary %}<a href="tel:{{ site.phone_primary }}" aria-label="Phone"><i class="bi bi-telephone-fill"></i></a>{% endif %}
+
+                    {# Fallback socials if none set #}
+                    {% if not site.instagram_url and not site.linkedin_url and not site.whatsapp_url %}
+                    <a href="https://www.instagram.com/mola_234.matthew/?hl=en" target="_blank" rel="noopener" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                    <a href="https://www.linkedin.com/in/matthew-lucky-588954292/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                    <a href="https://wa.me/2349131388402" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                    <a href="https://web.facebook.com/profile.php?id=61573498528512" target="_blank" rel="noopener" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                    <a href="https://github.com/" target="_blank" rel="noopener" aria-label="GitHub"><i class="bi bi-github"></i></a>
+                    {% endif %}
+                </div>
+
+                <div class="btn-group">
+                    <a href="#contact" class="btn-primary">Hire Me <i class="bi bi-arrow-right"></i></a>
+                    <a href="{% url 'portfolio:cv' %}" class="btn-outline">View CV <i class="bi bi-file-earmark-text"></i></a>
+                </div>
+
+                <div class="stats">
+                    {% if hero_stats %}
+                        {% for stat in hero_stats|slice:":3" %}
+                        <div class="stat-box">
+                            <h3><span class="counter" data-target="{{ stat.value }}">0</span>{{ stat.suffix }}</h3>
+                            <p>{{ stat.label }}</p>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="stat-box">
+                            <h3><span class="counter" data-target="7">0</span>+</h3>
+                            <p>Years Experience</p>
+                        </div>
+                        <div class="stat-box">
+                            <h3><span class="counter" data-target="99">0</span>+</h3>
+                            <p>Projects Completed</p>
+                        </div>
+                        <div class="stat-box">
+                            <h3><span class="counter" data-target="99">0</span>+</h3>
+                            <p>Happy Clients</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="hero-right">
+                <div class="img-wrapper">
+                    <div class="img-circle"></div>
+                    <div class="img-glow"></div>
+                    {% if cv_profile.photo %}
+                        <img src="{{ cv_profile.photo.url }}" alt="{{ cv_profile.full_name }}" class="profile-img" />
+                    {% else %}
+                        <img src="{% static 'image/portfolio picture.png' %}" alt="{{ site.site_name|default:'MOLA TECH' }}" class="profile-img" />
+                    {% endif %}
+                    <div class="floating-badge badge-1"><i class="bi bi-code-slash"></i> Developer</div>
+                    <div class="floating-badge badge-2"><i class="bi bi-robot"></i> AI Engineer</div>
+                    <div class="floating-badge badge-3"><i class="bi bi-palette"></i> Designer</div>
+                </div>
+            </div>
+        </div>
+
+        <a href="#services" class="scroll-down" aria-label="Scroll down">
+            <i class="bi bi-chevron-down"></i>
+        </a>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services" class="services section">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">What I Do</span>
+                <h2 class="section-title">My Services</h2>
+                <p class="section-subtitle">Comprehensive tech solutions tailored to your needs</p>
+            </div>
+
+            <div class="services-grid">
+                {% if services %}
+                    {% for service in services %}
+                    <div class="service-card reveal">
+                        <div class="service-icon"><i class="{{ service.icon|default:'bi bi-gear' }}"></i></div>
+                        <h4>{{ service.title }}</h4>
+                        <p>{{ service.description }}</p>
+                        <span class="service-arrow"><i class="bi bi-arrow-right"></i></span>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="service-card reveal">
+                        <div class="service-icon"><i class="bi bi-code-square"></i></div>
+                        <h4>Software Development</h4>
+                        <p>Frontend, Backend, Apps, Games &amp; full systems using modern technologies.</p>
+                        <span class="service-arrow"><i class="bi bi-arrow-right"></i></span>
+                    </div>
+                    <div class="service-card reveal">
+                        <div class="service-icon"><i class="bi bi-robot"></i></div>
+                        <h4>Robotics &amp; AI</h4>
+                        <p>AI automation, robotics systems, sensors, and smart solutions.</p>
+                        <span class="service-arrow"><i class="bi bi-arrow-right"></i></span>
+                    </div>
+                    <div class="service-card reveal">
+                        <div class="service-icon"><i class="bi bi-palette"></i></div>
+                        <h4>Graphics &amp; 3D Design</h4>
+                        <p>Branding, UI/UX, animation, 3D modeling &amp; visual identity.</p>
+                        <span class="service-arrow"><i class="bi bi-arrow-right"></i></span>
+                    </div>
+                    <div class="service-card reveal">
+                        <div class="service-icon"><i class="bi bi-phone"></i></div>
+                        <h4>Mobile App Development</h4>
+                        <p>Fast, secure and cross-platform Android &amp; iOS applications.</p>
+                        <span class="service-arrow"><i class="bi bi-arrow-right"></i></span>
+                    </div>
+                    <div class="service-card reveal">
+                        <div class="service-icon"><i class="bi bi-mortarboard"></i></div>
+                        <h4>Training &amp; Classes</h4>
+                        <p>Physical and online tech training for beginners and professionals.</p>
+                        <span class="service-arrow"><i class="bi bi-arrow-right"></i></span>
+                    </div>
+                    <div class="service-card reveal">
+                        <div class="service-icon"><i class="bi bi-cloud"></i></div>
+                        <h4>Cloud &amp; DevOps</h4>
+                        <p>Deployment, scaling, and infrastructure management on modern cloud platforms.</p>
+                        <span class="service-arrow"><i class="bi bi-arrow-right"></i></span>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="about section">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">Get To Know Me</span>
+                <h2 class="section-title">About Me</h2>
+                <p class="section-subtitle">A passionate engineer with a vision to build future minds</p>
+            </div>
+
+            <div class="about-content">
+                <div class="about-image reveal">
+                    <div class="about-img-wrapper">
+                        <div class="img-circle small"></div>
+                        {% if cv_profile.photo %}
+                            <img src="{{ cv_profile.photo.url }}" alt="{{ cv_profile.full_name }}" class="profile-img small" />
+                        {% else %}
+                            <img src="{% static 'image/portfolio picture.png' %}" alt="{{ site.site_name|default:'MOLA TECH' }}" class="profile-img small" />
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="about-text reveal">
+                    <h3>Engineer {{ cv_profile.full_name|default:"Lucky Matthew Obasanjo" }}</h3>
+                    <p class="about-role">{{ cv_profile.job_title|default:"Software Engineer & Founder of MOLA TECH" }}</p>
+                    <p>
+                        I am a Software Engineer and Founder of <strong>{{ site.site_name|default:"MOLA TECH" }}</strong>.
+                        I specialize in Robotics, AI, Web &amp; App Development, Digital Graphics,
+                        and 3D Design.
+                    </p>
+                    <p>
+                        My mission is to <strong>build future minds</strong> through innovative
+                        technology solutions that are powerful, scalable and visually appealing.
+                    </p>
+
+                    <div class="skills">
+                        <h4>Core Skills</h4>
+                        <div class="skill-bars">
+                            {% if skills %}
+                                {% for skill in skills|slice:":4" %}
+                                <div class="skill" data-percent="{{ skill.level }}">
+                                    <div class="skill-info">
+                                        <span>{{ skill.name }}</span>
+                                        <span class="skill-percent">{{ skill.level }}%</span>
+                                    </div>
+                                    <div class="skill-bar"><span style="width:0%" class="skill-fill"></span></div>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                <div class="skill" data-percent="95">
+                                    <div class="skill-info"><span>Web Development</span><span class="skill-percent">95%</span></div>
+                                    <div class="skill-bar"><span style="width:0%" class="skill-fill"></span></div>
+                                </div>
+                                <div class="skill" data-percent="90">
+                                    <div class="skill-info"><span>Mobile App Development</span><span class="skill-percent">90%</span></div>
+                                    <div class="skill-bar"><span style="width:0%" class="skill-fill"></span></div>
+                                </div>
+                                <div class="skill" data-percent="85">
+                                    <div class="skill-info"><span>AI &amp; Robotics</span><span class="skill-percent">85%</span></div>
+                                    <div class="skill-bar"><span style="width:0%" class="skill-fill"></span></div>
+                                </div>
+                                <div class="skill" data-percent="92">
+                                    <div class="skill-info"><span>Graphics &amp; 3D Design</span><span class="skill-percent">92%</span></div>
+                                    <div class="skill-bar"><span style="width:0%" class="skill-fill"></span></div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="about-tags">
+                        <span>Python</span><span>Django</span><span>JavaScript</span>
+                        <span>React</span><span>Node.js</span><span>Flutter</span>
+                        <span>TensorFlow</span><span>Arduino</span><span>Figma</span>
+                        <span>Blender</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PORTFOLIO -->
+    <section id="portfolio" class="portfolio section">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">My Work</span>
+                <h2 class="section-title">Portfolio</h2>
+                <p class="section-subtitle">A selection of projects I've built and designed</p>
+            </div>
+
+            <div class="portfolio-filters reveal">
+                <button class="filter-btn active" data-filter="all">All</button>
+                {% if categories %}
+                    {% for value, label in categories %}
+                <button class="filter-btn" data-filter="{{ value }}">{{ label }}</button>
+                    {% endfor %}
+                {% else %}
+                <button class="filter-btn" data-filter="web">Web</button>
+                <button class="filter-btn" data-filter="design">Design</button>
+                <button class="filter-btn" data-filter="hardware">Hardware</button>
+                <button class="filter-btn" data-filter="other">Other</button>
+                {% endif %}
+            </div>
+
+            <div class="portfolio-gallery" id="portfolioGallery">
+                {% if projects %}
+                    {% for project in projects %}
+                    <div class="portfolio-item reveal" data-category="{{ project.category }}">
+                        {% if project.image %}
+                            <img src="{{ project.image.url }}" alt="{{ project.title }}" loading="lazy" />
+                        {% else %}
+                            <div class="portfolio-placeholder-icon"><i class="{{ project.icon|default:'bi bi-palette' }}"></i></div>
+                        {% endif %}
+                        <div class="portfolio-overlay">
+                            <span class="portfolio-cat">{{ project.get_category_display }}</span>
+                            <h4>{{ project.title }}</h4>
+                            {% if project.link %}
+                                <a href="{{ project.link }}" target="_blank" rel="noopener" class="portfolio-view"><i class="bi bi-eye"></i> View</a>
+                            {% else %}
+                                <a href="#" class="portfolio-view"><i class="bi bi-eye"></i> View</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    {# Fallback: original hardcoded projects #}
+                    <div class="portfolio-item reveal" data-category="web">
+                        <img src="{% static 'image/homepg.PNG' %}" alt="Homepage Project" loading="lazy" />
+                        <div class="portfolio-overlay">
+                            <span class="portfolio-cat">Web</span>
+                            <h4>Homepage Design</h4>
+                            <a href="#" class="portfolio-view"><i class="bi bi-eye"></i> View</a>
+                        </div>
+                    </div>
+                    <div class="portfolio-item reveal" data-category="design">
+                        <img src="{% static 'image/12.PNG' %}" alt="Design Project" loading="lazy" />
+                        <div class="portfolio-overlay">
+                            <span class="portfolio-cat">Design</span>
+                            <h4>Creative Design</h4>
+                            <a href="#" class="portfolio-view"><i class="bi bi-eye"></i> View</a>
+                        </div>
+                    </div>
+                    <div class="portfolio-item reveal" data-category="design">
+                        <img src="{% static 'image/13.PNG' %}" alt="Design Project" loading="lazy" />
+                        <div class="portfolio-overlay">
+                            <span class="portfolio-cat">Design</span>
+                            <h4>Branding Project</h4>
+                            <a href="#" class="portfolio-view"><i class="bi bi-eye"></i> View</a>
+                        </div>
+                    </div>
+                    <div class="portfolio-item reveal" data-category="design">
+                        <img src="{% static 'image/14.PNG' %}" alt="Design Project" loading="lazy" />
+                        <div class="portfolio-overlay">
+                            <span class="portfolio-cat">Design</span>
+                            <h4>3D Modeling</h4>
+                            <a href="#" class="portfolio-view"><i class="bi bi-eye"></i> View</a>
+                        </div>
+                    </div>
+                    <div class="portfolio-item reveal" data-category="hardware">
+                        <img src="{% static 'image/drawing printer.png' %}" alt="Hardware Project" loading="lazy" />
+                        <div class="portfolio-overlay">
+                            <span class="portfolio-cat">Hardware</span>
+                            <h4>Drawing Printer</h4>
+                            <a href="#" class="portfolio-view"><i class="bi bi-eye"></i> View</a>
+                        </div>
+                    </div>
+                    <div class="portfolio-item reveal" data-category="web">
+                        <img src="{% static 'image/goody catering services.png' %}" alt="Catering Service" loading="lazy" />
+                        <div class="portfolio-overlay">
+                            <span class="portfolio-cat">Web</span>
+                            <h4>Goody Catering Services</h4>
+                            <a href="#" class="portfolio-view"><i class="bi bi-eye"></i> View</a>
+                        </div>
+                    </div>
+                    <div class="portfolio-item reveal" data-category="other">
+                        <img src="{% static 'image/IMG-20241019-WA0009.jpg' %}" alt="Project" loading="lazy" />
+                        <div class="portfolio-overlay">
+                            <span class="portfolio-cat">Other</span>
+                            <h4>Creative Work</h4>
+                            <a href="#" class="portfolio-view"><i class="bi bi-eye"></i> View</a>
+                        </div>
+                    </div>
+                    <div class="portfolio-item reveal" data-category="other">
+                        <img src="{% static 'image/IMG-20241019-WA0010.jpg' %}" alt="Project" loading="lazy" />
+                        <div class="portfolio-overlay">
+                            <span class="portfolio-cat">Other</span>
+                            <h4>Creative Work</h4>
+                            <a href="#" class="portfolio-view"><i class="bi bi-eye"></i> View</a>
+                        </div>
+                    </div>
+                    <div class="portfolio-item reveal" data-category="design">
+                        <img src="{% static 'image/logos1.png' %}" alt="Logo Design" loading="lazy" />
+                        <div class="portfolio-overlay">
+                            <span class="portfolio-cat">Design</span>
+                            <h4>Logo Collection 1</h4>
+                            <a href="#" class="portfolio-view"><i class="bi bi-eye"></i> View</a>
+                        </div>
+                    </div>
+                    <div class="portfolio-item reveal" data-category="design">
+                        <img src="{% static 'image/logos2.png' %}" alt="Logo Design" loading="lazy" />
+                        <div class="portfolio-overlay">
+                            <span class="portfolio-cat">Design</span>
+                            <h4>Logo Collection 2</h4>
+                            <a href="#" class="portfolio-view"><i class="bi bi-eye"></i> View</a>
+                        </div>
+                    </div>
+                    <div class="portfolio-item reveal" data-category="design">
+                        <img src="{% static 'image/logos3.png' %}" alt="Logo Design" loading="lazy" />
+                        <div class="portfolio-overlay">
+                            <span class="portfolio-cat">Design</span>
+                            <h4>Logo Collection 3</h4>
+                            <a href="#" class="portfolio-view"><i class="bi bi-eye"></i> View</a>
+                        </div>
+                    </div>
+                    <div class="portfolio-item reveal" data-category="design">
+                        <img src="{% static 'image/logos4.png' %}" alt="Logo Design" loading="lazy" />
+                        <div class="portfolio-overlay">
+                            <span class="portfolio-cat">Design</span>
+                            <h4>Logo Collection 4</h4>
+                            <a href="#" class="portfolio-view"><i class="bi bi-eye"></i> View</a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="portfolio-cta reveal">
+                <a href="#contact" class="btn-primary big">Let's Work Together <i class="bi bi-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section id="testimonials" class="testimonials section">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">What Clients Say</span>
+                <h2 class="section-title">Testimonials</h2>
+                <p class="section-subtitle">Real feedback from people I've worked with</p>
+            </div>
+
+            <div class="testimonial-slider reveal">
+                <div class="testimonial-track" id="testimonialTrack">
+                    {% if testimonials %}
+                        {% for t in testimonials %}
+                        <div class="testimonial-card">
+                            <div class="quote-icon"><i class="bi bi-quote"></i></div>
+                            <p>{{ t.message }}</p>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">
+                                    {% if t.avatar %}
+                                        <img src="{{ t.avatar.url }}" alt="{{ t.name }}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+                                    {% else %}
+                                        <i class="bi bi-person-fill"></i>
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    <h5>{{ t.name }}</h5>
+                                    <span>{{ t.role }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="testimonial-card">
+                            <div class="quote-icon"><i class="bi bi-quote"></i></div>
+                            <p>Lucky delivered an outstanding web app for our business. His attention to detail and problem-solving skills are top-notch.</p>
+                            <div class="testimonial-author">
+                                <div class="author-avatar"><i class="bi bi-person-fill"></i></div>
+                                <div>
+                                    <h5>Client Name</h5>
+                                    <span>Business Owner</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial-card">
+                            <div class="quote-icon"><i class="bi bi-quote"></i></div>
+                            <p>Working with MOLA TECH was smooth from start to finish. The branding and 3D design work exceeded our expectations.</p>
+                            <div class="testimonial-author">
+                                <div class="author-avatar"><i class="bi bi-person-fill"></i></div>
+                                <div>
+                                    <h5>Client Name</h5>
+                                    <span>Marketing Director</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial-card">
+                            <div class="quote-icon"><i class="bi bi-quote"></i></div>
+                            <p>His robotics and AI knowledge is impressive. He built a working prototype faster than we thought possible.</p>
+                            <div class="testimonial-author">
+                                <div class="author-avatar"><i class="bi bi-person-fill"></i></div>
+                                <div>
+                                    <h5>Client Name</h5>
+                                    <span>Startup Founder</span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="testimonial-nav">
+                    <button id="prevTestimonial" aria-label="Previous"><i class="bi bi-chevron-left"></i></button>
+                    <div class="testimonial-dots" id="testimonialDots">
+                        {% if testimonials %}
+                            {% for t in testimonials %}
+                            <span class="dot {% if forloop.first %}active{% endif %}" data-index="{{ forloop.counter0 }}"></span>
+                            {% endfor %}
+                        {% else %}
+                            <span class="dot active" data-index="0"></span>
+                            <span class="dot" data-index="1"></span>
+                            <span class="dot" data-index="2"></span>
+                        {% endif %}
+                    </div>
+                    <button id="nextTestimonial" aria-label="Next"><i class="bi bi-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="contact section">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">Let's Talk</span>
+                <h2 class="section-title">Contact Me</h2>
+                <p class="section-subtitle">Have a project? Send me a message and let's build something great</p>
+            </div>
+
+            <div class="contact-wrapper">
+                <div class="contact-info reveal">
+                    <h3>Get In Touch</h3>
+                    <p>I'm available for freelance work, collaborations, and full-time opportunities.</p>
+
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="bi bi-envelope-fill"></i></div>
+                        <div>
+                            <h4>Email</h4>
+                            <a href="mailto:{{ site.email|default:'molatech6784@gmail.com' }}">{{ site.email|default:"molatech6784@gmail.com" }}</a>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="bi bi-telephone-fill"></i></div>
+                        <div>
+                            <h4>Phone</h4>
+                            <a href="tel:{{ site.phone_primary|default:'+2349022556784' }}">{{ site.phone_primary|default:"+234 902 255 6784" }}</a>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="bi bi-geo-alt-fill"></i></div>
+                        <div>
+                            <h4>Location</h4>
+                            <p>{{ site.location|default:"Nigeria" }}</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-socials">
+                        {% if site.whatsapp_url %}<a href="{{ site.whatsapp_url }}" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>{% endif %}
+                        {% if site.linkedin_url %}<a href="{{ site.linkedin_url }}" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>{% endif %}
+                        {% if site.instagram_url %}<a href="{{ site.instagram_url }}" target="_blank" rel="noopener" aria-label="Instagram"><i class="bi bi-instagram"></i></a>{% endif %}
+                        {% if site.facebook_url %}<a href="{{ site.facebook_url }}" target="_blank" rel="noopener" aria-label="Facebook"><i class="bi bi-facebook"></i></a>{% endif %}
+                        {% if site.twitter_url %}<a href="{{ site.twitter_url }}" target="_blank" rel="noopener" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>{% endif %}
+                        {% if site.github_url %}<a href="{{ site.github_url }}" target="_blank" rel="noopener" aria-label="GitHub"><i class="bi bi-github"></i></a>{% endif %}
+                    </div>
+                </div>
+
+                <form class="contact-form reveal" id="contactForm" method="POST" action="{% url 'portfolio:contact' %}">
+                    {% csrf_token %}
+
+                    {% if messages %}
+                    <div class="messages" style="margin-bottom:16px;">
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}" style="padding:12px 16px;border-radius:8px;font-size:0.9rem;background:rgba(0,217,140,0.1);color:#00d98c;border:1px solid rgba(0,217,140,0.3);">
+                            <i class="bi bi-check-circle-fill"></i> {{ message }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="id_name">Name</label>
+                            <input type="text" id="id_name" name="name" placeholder="Your full name" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="id_email">Email</label>
+                            <input type="email" id="id_email" name="email" placeholder="you@example.com" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_subject">Subject</label>
+                        <input type="text" id="id_subject" name="subject" placeholder="What is this about?" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="id_message">Message</label>
+                        <textarea id="id_message" name="message" rows="6" placeholder="Tell me about your project..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary full">
+                        <span>Send Message</span> <i class="bi bi-send-fill"></i>
+                    </button>
+                    <div class="form-status" id="formStatus"></div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container footer-inner">
+            <div class="footer-brand">
+                <div class="logo">
+                    <img src="{% static 'image/mola logo.png' %}" alt="{{ site.site_name|default:'MOLA TECH' }}" width="32" />
+                    <span>MOLA <em>TECH</em></span>
+                </div>
+                <p>{{ site.about_summary|default:"Building Future Minds — Where Art Meets Code." }}</p>
+            </div>
+
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <a href="{% url 'portfolio:index' %}">Home</a>
+                <a href="{% url 'portfolio:index' %}#about">About</a>
+                <a href="{% url 'portfolio:index' %}#services">Services</a>
+                <a href="{% url 'portfolio:portfolio' %}">Portfolio</a>
+                <a href="{% url 'portfolio:cv' %}">CV</a>
+            </div>
+
+            <div class="footer-links">
+                <h4>Contact</h4>
+                <a href="mailto:{{ site.email|default:'molatech6784@gmail.com' }}">{{ site.email|default:"molatech6784@gmail.com" }}</a>
+                <a href="tel:{{ site.phone_primary|default:'+2349022556784' }}">{{ site.phone_primary|default:"+234 902 255 6784" }}</a>
+                {% if site.whatsapp_url %}<a href="{{ site.whatsapp_url }}" target="_blank" rel="noopener">WhatsApp</a>{% endif %}
+            </div>
+
+            <div class="footer-socials-col">
+                <h4>Follow</h4>
+                <div class="footer-socials">
+                    {% if site.github_url %}<a href="{{ site.github_url }}" aria-label="GitHub"><i class="bi bi-github"></i></a>{% endif %}
+                    {% if site.linkedin_url %}<a href="{{ site.linkedin_url }}" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>{% endif %}
+                    {% if site.twitter_url %}<a href="{{ site.twitter_url }}" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>{% endif %}
+                    {% if site.instagram_url %}<a href="{{ site.instagram_url }}" aria-label="Instagram"><i class="bi bi-instagram"></i></a>{% endif %}
+
+                    {# Fallback socials if none set #}
+                    {% if not site.github_url and not site.linkedin_url and not site.instagram_url %}
+                    <a href="https://github.com/" aria-label="GitHub"><i class="bi bi-github"></i></a>
+                    <a href="https://www.linkedin.com/in/matthew-lucky-588954292/" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                    <a href="https://www.instagram.com/mola_234.matthew/?hl=en" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; <span id="year"></span> {{ site.site_name|default:"MOLA TECH" }}. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- BACK TO TOP -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <i class="bi bi-arrow-up"></i>
+    </button>
+
+    <!-- IMAGE LIGHTBOX -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" id="lightboxClose">&times;</span>
+        <img src="" alt="Preview" id="lightboxImg" />
+    </div>
+
+    <script src="{% static 'js/portfolio.js' %}" onerror="document.documentElement.classList.remove('js')"></script>
+</body>
+
+</html>

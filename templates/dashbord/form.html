@@ -1,0 +1,47 @@
+{% extends 'dashboard/base.html' %}
+{% block content %}
+
+<div class="panel form-panel">
+    <div class="panel-header">
+        <h2>{{ title }}</h2>
+        <a href="{% url back_url %}" class="btn-link">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+    </div>
+    <div class="panel-body">
+        <form method="post" enctype="multipart/form-data" class="dash-form">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger mb-3">
+                {{ form.non_field_errors }}
+            </div>
+            {% endif %}
+
+            {% for field in form %}
+            <div class="form-group {% if field.errors %}has-error{% endif %}">
+                <label for="{{ field.id_for_label }}">
+                    {{ field.label }}
+                    {% if field.field.required %}<span class="req">*</span>{% endif %}
+                </label>
+                {{ field }}
+                {% if field.help_text %}
+                <small class="help">{{ field.help_text }}</small>
+                {% endif %}
+                {% for err in field.errors %}
+                <small class="error">{{ err }}</small>
+                {% endfor %}
+            </div>
+            {% endfor %}
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Save
+                </button>
+                <a href="{% url back_url %}" class="btn btn-ghost">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

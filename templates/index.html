@@ -1,0 +1,684 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{{ site.tagline|default:'MOLA TECH - Where Art Meets Code. We build future minds through innovative design, software development, and AI solutions.' }}">
+    <title>{{ site.site_name|default:"MOLA TECH" }} | {{ site.tagline|default:"Where Art Meets Code" }}</title>
+
+    <!-- Marks JS as available so scroll-reveal hiding only applies when script.js really loads -->
+    <script>document.documentElement.classList.add('js');</script>
+
+    <link rel="shortcut icon" href="{% static 'image/mola logo.png' %}" type="image/png">
+
+    <!-- Bootstrap 5.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          onerror="this.onerror=null;this.href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/css/bootstrap.min.css'">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+          onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css'">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    <!-- ========== SCROLL PROGRESS ========== -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- ========== PRELOADER ========== -->
+    <div class="preloader" id="preloader" aria-hidden="true">
+        <div class="preloader-content">
+            <div class="preloader-logo">
+                <img src="{% static 'image/mola logo.png' %}" alt="{{ site.site_name|default:'MOLA TECH' }}">
+            </div>
+            <div class="preloader-spinner"></div>
+        </div>
+    </div>
+
+    <!-- ========== NAVBAR ========== -->
+    <nav class="navbar navbar-expand-lg fixed-top custom-navbar" id="mainNavbar">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="#home">
+                <img src="{% static 'image/mola logo.png' %}" alt="{{ site.site_name|default:'MOLA TECH' }}" class="brand-logo">
+                <span class="brand-text">MOLA <span class="text-gradient">TECH</span></span>
+            </a>
+
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars fs-3"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+                    <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#portfolio">Portfolio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'portfolio:portfolio' %}">All Projects</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'portfolio:cv' %}">CV</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                    <li class="nav-item ms-lg-3">
+                        <button class="btn btn-theme-toggle rounded-circle" id="themeToggle" aria-label="Toggle theme">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <a href="#contact" class="btn btn-brand btn-sm px-4">Hire Me</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ========== HERO ========== -->
+    <section class="hero-section" id="home">
+        <div class="hero-orb hero-orb-1" aria-hidden="true"></div>
+        <div class="hero-orb hero-orb-2" aria-hidden="true"></div>
+        <div class="hero-orb hero-orb-3" aria-hidden="true"></div>
+
+        <div class="container">
+            <div class="row align-items-center min-vh-100 py-5 g-5">
+                <div class="col-lg-7 hero-text fade-in-up">
+                    <span class="hero-chip">
+                        <i class="fas fa-rocket"></i> {{ hero.badge_text|default:"Building Future Minds" }}
+                    </span>
+                    <h1 class="hero-title mt-3 mb-4">
+                        {{ hero.headline_1|default:"Where" }}
+                        <span class="text-gradient">{{ hero.headline_highlight_1|default:"Art" }}</span>
+                        {{ hero.headline_2|default:"Meets" }}
+                        <span class="text-gradient">{{ hero.headline_highlight_2|default:"Code" }}</span>
+                    </h1>
+                    <p class="hero-lead mb-4">
+                        {{ hero.paragraph|default:"MOLA TECH is a fusion of creativity and technology — where innovative thinkers craft stunning designs and write efficient code to simplify complex problems." }}
+                    </p>
+
+                    <div class="hero-actions mb-5">
+                        <a href="{{ hero.cta_primary_link|default:'#services' }}" class="btn btn-brand btn-lg px-4">
+                            {{ hero.cta_primary_text|default:"Explore Services" }} <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
+                        <a href="{{ hero.cta_secondary_link|default:'#contact' }}" class="btn btn-outline-brand btn-lg px-4">
+                            {{ hero.cta_secondary_text|default:"Get in Touch" }} <i class="fas fa-paper-plane ms-2"></i>
+                        </a>
+                        <a href="{{ hero.cta_tertiary_link|default:'/cv/' }}" class="btn btn-ghost btn-lg px-4">
+                            {{ hero.cta_tertiary_text|default:"View CV" }} <i class="fas fa-file-alt ms-2"></i>
+                        </a>
+                    </div>
+
+                    <div class="row g-3 hero-stats">
+                        {% if hero_stats %}
+                            {% for stat in hero_stats %}
+                            <div class="col-6 col-md-4">
+                                <div class="stat-box">
+                                    <h3 class="stat-number" data-count="{{ stat.value }}">0</h3>
+                                    <span class="stat-label">{{ stat.label }}</span>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="col-6 col-md-4">
+                                <div class="stat-box">
+                                    <h3 class="stat-number" data-count="50">0</h3>
+                                    <span class="stat-label">Projects</span>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-4">
+                                <div class="stat-box">
+                                    <h3 class="stat-number" data-count="30">0</h3>
+                                    <span class="stat-label">Happy Clients</span>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-4">
+                                <div class="stat-box">
+                                    <h3 class="stat-number" data-count="5">0</h3>
+                                    <span class="stat-label">Years Exp.</span>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="col-lg-5 hero-visual fade-in-up">
+                    <div class="hero-img-wrap">
+                        <div class="hero-img-ring" aria-hidden="true"></div>
+                        {% if hero.hero_image %}
+                            <img src="{{ hero.hero_image.url }}" alt="{{ site.site_name|default:'MOLA TECH' }}" class="hero-img">
+                        {% else %}
+                            <img src="{% static 'image/portfolio picture.png' %}" alt="{{ site.site_name|default:'MOLA TECH' }}" class="hero-img">
+                        {% endif %}
+                        <div class="hero-badge badge-1">
+                            <i class="fas fa-code"></i> Developer
+                        </div>
+                        <div class="hero-badge badge-2">
+                            <i class="fas fa-robot"></i> AI Engineer
+                        </div>
+                        <div class="hero-badge badge-3">
+                            <i class="fas fa-palette"></i> Designer
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <a href="#about" class="scroll-down-bubble" aria-label="Scroll down">
+            <i class="fas fa-chevron-down"></i>
+        </a>
+    </section>
+
+    <!-- ========== ABOUT ========== -->
+    <section id="about" class="section-pad">
+        <div class="container">
+            <div class="section-head reveal text-center mb-5">
+                <span class="section-chip">Who We Are</span>
+                <h2 class="section-h2">About Us</h2>
+                <p class="section-sub">A team dedicated to crafting extraordinary digital experiences.</p>
+            </div>
+
+            <div class="row g-5">
+                <div class="col-lg-6 reveal">
+                    <div class="about-card">
+                        <div class="about-block">
+                            <h4><i class="fas fa-history"></i> {{ about.background_title|default:"Our Background" }}</h4>
+                            <p>{{ about.background_text|default:"MOLA TECH Company was founded on the belief that technology and design can come together to create something truly extraordinary. Our journey began with a passion for innovation and a desire to make a meaningful impact." }}</p>
+                        </div>
+
+                        <div class="about-block">
+                            <h4><i class="fas fa-bullseye"></i> {{ about.mission_title|default:"Our Mission" }}</h4>
+                            <p>{{ about.mission_text|default:"Our mission is to harness the power of technology and design to deliver exceptional solutions that empower businesses and individuals. We strive to build long-lasting relationships, foster growth, and inspire positive change." }}</p>
+                        </div>
+
+                        <div class="about-block">
+                            <h4><i class="fas fa-eye"></i> {{ about.vision_title|default:"Our Vision" }}</h4>
+                            <p>{{ about.vision_text|default:"A world transformed by technology and design where businesses and individuals are empowered by exceptional solutions — driven by the seamless integration of cutting-edge tech and innovative design." }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 reveal">
+                    <div class="values-grid">
+                        {% if core_values %}
+                            {% for value in core_values %}
+                            <div class="value-card">
+                                <div class="value-icon"><i class="{{ value.icon|default:'fas fa-lightbulb' }}"></i></div>
+                                <h5>{{ value.title }}</h5>
+                                <p>{{ value.description }}</p>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="value-card">
+                                <div class="value-icon"><i class="fas fa-lightbulb"></i></div>
+                                <h5>Innovation</h5>
+                                <p>Embracing creativity and innovation in everything we do</p>
+                            </div>
+                            <div class="value-card">
+                                <div class="value-icon"><i class="fas fa-star"></i></div>
+                                <h5>Excellence</h5>
+                                <p>Delivering high-quality solutions that exceed expectations</p>
+                            </div>
+                            <div class="value-card">
+                                <div class="value-icon"><i class="fas fa-shield-alt"></i></div>
+                                <h5>Integrity</h5>
+                                <p>Honesty, transparency, and ethics in all we do</p>
+                            </div>
+                            <div class="value-card">
+                                <div class="value-icon"><i class="fas fa-users"></i></div>
+                                <h5>Collaboration</h5>
+                                <p>Fostering a culture of teamwork and partnership</p>
+                            </div>
+                            <div class="value-card">
+                                <div class="value-icon"><i class="fas fa-heart"></i></div>
+                                <h5>Passion</h5>
+                                <p>Pursuing our work with enthusiasm and dedication</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SERVICES ========== -->
+    <section id="services" class="section-pad bg-soft">
+        <div class="container">
+            <div class="section-head reveal text-center mb-5">
+                <span class="section-chip">What We Do</span>
+                <h2 class="section-h2">Our Services</h2>
+                <p class="section-sub">Comprehensive tech solutions tailored to your needs.</p>
+            </div>
+
+            <div class="row g-4">
+                {% if services %}
+                    {% for service in services %}
+                    <div class="col-md-6 col-lg-3 reveal">
+                        <div class="service-card">
+                            <div class="service-icon-wrap"><i class="{{ service.icon|default:'fas fa-cog' }}"></i></div>
+                            <h5>{{ service.title }}</h5>
+                            <p class="mb-3">{{ service.description }}</p>
+                            {% if service.bullet_list %}
+                            <ul class="service-list">
+                                {% for bullet in service.bullet_list %}
+                                <li>{{ bullet }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="col-md-6 col-lg-3 reveal">
+                        <div class="service-card">
+                            <div class="service-icon-wrap"><i class="fas fa-paint-brush"></i></div>
+                            <h5>Graphics Design</h5>
+                            <p class="mb-3">We craft stunning graphics designs that tell compelling stories.</p>
+                            <ul class="service-list">
+                                <li>Logo Design</li>
+                                <li>Branding & Identity</li>
+                                <li>Marketing Materials</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 reveal">
+                        <div class="service-card">
+                            <div class="service-icon-wrap"><i class="fas fa-code"></i></div>
+                            <h5>Software Development</h5>
+                            <p class="mb-3">Writing efficient code that simplifies complex problems.</p>
+                            <ul class="service-list">
+                                <li>Web Applications</li>
+                                <li>Mobile Applications</li>
+                                <li>Custom Solutions</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 reveal">
+                        <div class="service-card">
+                            <div class="service-icon-wrap"><i class="fas fa-robot"></i></div>
+                            <h5>Robotics & AI</h5>
+                            <p class="mb-3">Innovative automation and AI integration solutions.</p>
+                            <ul class="service-list">
+                                <li>Robotics Engineering</li>
+                                <li>Automation</li>
+                                <li>AI & ML Integration</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 reveal">
+                        <div class="service-card">
+                            <div class="service-icon-wrap"><i class="fas fa-graduation-cap"></i></div>
+                            <h5>Training</h5>
+                            <p class="mb-3">Empowering future minds with knowledge and skills.</p>
+                            <ul class="service-list">
+                                <li>Workshops</li>
+                                <li>Online Courses</li>
+                                <li>Custom Programs</li>
+                            </ul>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== PORTFOLIO ========== -->
+    <section id="portfolio" class="section-pad">
+        <div class="container">
+            <div class="section-head reveal text-center mb-5">
+                <span class="section-chip">Our Work</span>
+                <h2 class="section-h2">Our Portfolio</h2>
+                <p class="section-sub">Selected projects that showcase what we do best.</p>
+            </div>
+
+            <div class="portfolio-filters reveal">
+                <button class="filter-btn active" data-filter="all">All</button>
+                {% if categories %}
+                    {% for value, label in categories %}
+                <button class="filter-btn" data-filter="{{ value }}">{{ label }}</button>
+                    {% endfor %}
+                {% else %}
+                <button class="filter-btn" data-filter="graphics">Graphics Design</button>
+                <button class="filter-btn" data-filter="software">Software</button>
+                <button class="filter-btn" data-filter="robotics">Robotics</button>
+                {% endif %}
+            </div>
+
+            <div class="row g-4" id="portfolioGrid">
+                {% if projects %}
+                    {% for project in projects %}
+                    <div class="col-md-6 col-lg-4 reveal portfolio-col" data-category="{{ project.category }}">
+                        <div class="portfolio-card">
+                            <div class="portfolio-img">
+                                {% if project.image %}
+                                    <img src="{{ project.image.url }}" alt="{{ project.title }}">
+                                {% else %}
+                                    <i class="{{ project.icon|default:'fas fa-palette' }}"></i>
+                                {% endif %}
+                            </div>
+                            <div class="portfolio-body">
+                                <span class="portfolio-tag">{{ project.get_category_display }}</span>
+                                <h5>{{ project.title }}</h5>
+                                <p>{{ project.description|truncatewords:15 }}</p>
+                                {% if project.link %}
+                                    <a href="{{ project.link }}" class="portfolio-link" target="_blank" rel="noopener">
+                                        View Case Study <i class="fas fa-arrow-right"></i>
+                                    </a>
+                                {% else %}
+                                    <a href="#" class="portfolio-link">View Case Study <i class="fas fa-arrow-right"></i></a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    {# Fallback projects when DB has none #}
+                    <div class="col-md-6 col-lg-4 reveal portfolio-col" data-category="graphics">
+                        <div class="portfolio-card">
+                            <div class="portfolio-img"><i class="fas fa-palette"></i></div>
+                            <div class="portfolio-body">
+                                <span class="portfolio-tag">Graphics Design</span>
+                                <h5>XYZ Corporation</h5>
+                                <p>Logo design and brand identity for a leading corporation.</p>
+                                <a href="#" class="portfolio-link">View Case Study <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 reveal portfolio-col" data-category="software">
+                        <div class="portfolio-card">
+                            <div class="portfolio-img"><i class="fas fa-laptop-code"></i></div>
+                            <div class="portfolio-body">
+                                <span class="portfolio-tag">Software Development</span>
+                                <h5>EFG Company</h5>
+                                <p>Custom web application for business operations.</p>
+                                <a href="#" class="portfolio-link">View Case Study <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 reveal portfolio-col" data-category="robotics">
+                        <div class="portfolio-card">
+                            <div class="portfolio-img"><i class="fas fa-cogs"></i></div>
+                            <div class="portfolio-body">
+                                <span class="portfolio-tag">Robotics</span>
+                                <h5>KLM Manufacturing</h5>
+                                <p>Automation solution for manufacturing processes.</p>
+                                <a href="#" class="portfolio-link">View Case Study <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="text-center mt-5 reveal">
+                <a href="{% url 'portfolio:portfolio' %}" class="btn btn-brand btn-lg px-4">
+                    View All Projects <i class="fas fa-arrow-right ms-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== TESTIMONIALS ========== -->
+    <section class="section-pad bg-soft">
+        <div class="container">
+            <div class="section-head reveal text-center mb-5">
+                <span class="section-chip">What Clients Say</span>
+                <h2 class="section-h2">Testimonials</h2>
+                <p class="section-sub">Real feedback from people we've worked with.</p>
+            </div>
+
+            <div class="testimonials-slider reveal">
+                {% if testimonials %}
+                    {% for t in testimonials %}
+                    <div class="testimonial-card {% if forloop.first %}active{% endif %}">
+                        <div class="testimonial-quote"><i class="fas fa-quote-left"></i></div>
+                        <p class="testimonial-text">{{ t.message }}</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                {% if t.avatar %}<img src="{{ t.avatar.url }}" alt="{{ t.name }}">{% else %}<i class="fas fa-user"></i>{% endif %}
+                            </div>
+                            <div>
+                                <h6 class="mb-0">{{ t.name }}</h6>
+                                <small class="text-muted">{{ t.role }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <div class="testimonial-dots">
+                        {% for t in testimonials %}
+                        <span class="dot {% if forloop.first %}active{% endif %}" data-index="{{ forloop.counter0 }}" role="button" aria-label="Testimonial {{ forloop.counter }}"></span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {# Fallback testimonials when DB has none #}
+                    <div class="testimonial-card active">
+                        <div class="testimonial-quote"><i class="fas fa-quote-left"></i></div>
+                        <p class="testimonial-text">MOLA TECH transformed our brand identity completely. Their design team understood our vision and delivered beyond expectations.</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar"><i class="fas fa-user"></i></div>
+                            <div>
+                                <h6 class="mb-0">John Doe</h6>
+                                <small class="text-muted">CEO, XYZ Corporation</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-quote"><i class="fas fa-quote-left"></i></div>
+                        <p class="testimonial-text">The software solution they built streamlined our entire operation. Professional, reliable, and innovative team.</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar"><i class="fas fa-user"></i></div>
+                            <div>
+                                <h6 class="mb-0">Jane Smith</h6>
+                                <small class="text-muted">CTO, EFG Company</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-quote"><i class="fas fa-quote-left"></i></div>
+                        <p class="testimonial-text">Their AI integration exceeded our expectations. MOLA TECH is truly where art meets code.</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar"><i class="fas fa-user"></i></div>
+                            <div>
+                                <h6 class="mb-0">Mike Johnson</h6>
+                                <small class="text-muted">Director, KLM Manufacturing</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-dots">
+                        <span class="dot active" data-index="0" role="button"></span>
+                        <span class="dot" data-index="1" role="button"></span>
+                        <span class="dot" data-index="2" role="button"></span>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CONTACT ========== -->
+    <section id="contact" class="section-pad">
+        <div class="container">
+            <div class="section-head reveal text-center mb-5">
+                <span class="section-chip">Let's Talk</span>
+                <h2 class="section-h2">Contact Us</h2>
+                <p class="section-sub">Have a project in mind? Let's build something great together.</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-5 reveal">
+                    <div class="contact-card">
+                        <h4 class="mb-3">Get in Touch</h4>
+                        <p class="text-muted mb-4">{{ site.about_summary|default:"Ready to bring your ideas to life? Reach out today and let's discuss how MOLA TECH can help you achieve your goals." }}</p>
+
+                        <div class="contact-row">
+                            <div class="contact-icon"><i class="fas fa-phone-alt"></i></div>
+                            <div>
+                                <h6 class="mb-1">Phone</h6>
+                                <p class="mb-0 text-muted">
+                                    {% if site.phone_primary %}{{ site.phone_primary }}{% else %}09022556784{% endif %}<br>
+                                    {% if site.phone_secondary %}{{ site.phone_secondary }}{% else %}09131388402{% endif %}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="contact-row">
+                            <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                            <div>
+                                <h6 class="mb-1">Email</h6>
+                                <p class="mb-0 text-muted">{{ site.email|default:"molatech6784@gmail.com" }}</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-row">
+                            <div class="contact-icon"><i class="fas fa-clock"></i></div>
+                            <div>
+                                <h6 class="mb-1">Working Hours</h6>
+                                <p class="mb-0 text-muted">{{ site.working_hours|default:"Mon – Fri: 9:00 AM – 4:00 PM" }}</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-row">
+                            <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                            <div>
+                                <h6 class="mb-1">Location</h6>
+                                <p class="mb-0 text-muted">{{ site.location|default:"Nigeria" }}</p>
+                            </div>
+                        </div>
+
+                        <h6 class="mt-4 mb-3">Follow Us</h6>
+                        <div class="d-flex flex-wrap gap-2">
+                            {% if site.instagram_url %}<a href="{{ site.instagram_url }}" class="social-btn" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>{% endif %}
+                            {% if site.twitter_url %}<a href="{{ site.twitter_url }}" class="social-btn" target="_blank" rel="noopener" aria-label="Twitter"><i class="fab fa-twitter"></i></a>{% endif %}
+                            {% if site.youtube_url %}<a href="{{ site.youtube_url }}" class="social-btn" target="_blank" rel="noopener" aria-label="YouTube"><i class="fab fa-youtube"></i></a>{% endif %}
+                            {% if site.tiktok_url %}<a href="{{ site.tiktok_url }}" class="social-btn" target="_blank" rel="noopener" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>{% endif %}
+                            {% if site.facebook_url %}<a href="{{ site.facebook_url }}" class="social-btn" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>{% endif %}
+                            {% if site.linkedin_url %}<a href="{{ site.linkedin_url }}" class="social-btn" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>{% endif %}
+                            {% if site.whatsapp_url %}<a href="{{ site.whatsapp_url }}" class="social-btn" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>{% endif %}
+                            {% if site.github_url %}<a href="{{ site.github_url }}" class="social-btn" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github"></i></a>{% endif %}
+
+                            {# Fallback socials if none set #}
+                            {% if not site.instagram_url and not site.linkedin_url and not site.facebook_url %}
+                            <a href="https://www.instagram.com/mola_234.matthew/?hl=en" class="social-btn" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                            <a href="https://www.linkedin.com/in/matthew-lucky-588954292/" class="social-btn" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="https://web.facebook.com/profile.php?id=61573498528512" class="social-btn" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-7 reveal">
+                    <div class="contact-card">
+                        {% if messages %}
+                        <div class="mb-3">
+                            {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} mb-2">
+                                <i class="fas fa-{% if message.tags == 'success' %}check-circle{% else %}exclamation-circle{% endif %} me-2"></i>
+                                {{ message }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                        <form id="contactForm" method="POST" action="{% url 'portfolio:contact' %}" novalidate>
+                            {% csrf_token %}
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="id_name" class="form-label">Your Name</label>
+                                    <input type="text" class="form-control" id="id_name" name="name" placeholder="John Doe" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="id_email" class="form-label">Your Email</label>
+                                    <input type="email" class="form-control" id="id_email" name="email" placeholder="john@example.com" required>
+                                </div>
+                                <div class="col-12">
+                                    <label for="id_subject" class="form-label">Subject</label>
+                                    <input type="text" class="form-control" id="id_subject" name="subject" placeholder="Project Inquiry" required>
+                                </div>
+                                <div class="col-12">
+                                    <label for="id_message" class="form-label">Your Message</label>
+                                    <textarea class="form-control" id="id_message" name="message" rows="5" placeholder="Tell us about your project..." required></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-brand btn-lg w-100">
+                                        Send Message <i class="fas fa-paper-plane ms-2"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row g-4 pb-4">
+                <div class="col-lg-4">
+                    <a href="#home" class="footer-brand d-inline-flex align-items-center gap-2 mb-3">
+                        <img src="{% static 'image/mola logo.png' %}" alt="{{ site.site_name|default:'MOLA TECH' }}" class="brand-logo">
+                        <span class="brand-text">MOLA <span class="text-gradient">TECH</span></span>
+                    </a>
+                    <p class="text-muted mb-0">{{ site.about_summary|default:"Where Art Meets Code. Building Future Minds." }}</p>
+                </div>
+
+                <div class="col-6 col-lg-2">
+                    <h6 class="footer-heading">Quick Links</h6>
+                    <ul class="footer-list">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="{% url 'portfolio:portfolio' %}">All Projects</a></li>
+                        <li><a href="{% url 'portfolio:cv' %}">CV</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-6 col-lg-3">
+                    <h6 class="footer-heading">Services</h6>
+                    <ul class="footer-list">
+                        {% if services %}
+                            {% for s in services|slice:":4" %}
+                            <li><a href="#services">{{ s.title }}</a></li>
+                            {% endfor %}
+                        {% else %}
+                            <li><a href="#services">Graphics Design</a></li>
+                            <li><a href="#services">Software Development</a></li>
+                            <li><a href="#services">Robotics & AI</a></li>
+                            <li><a href="#services">Training</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+
+                <div class="col-lg-3">
+                    <h6 class="footer-heading">Contact</h6>
+                    <ul class="footer-list">
+                        <li><i class="fas fa-phone me-2"></i>{{ site.phone_primary|default:"09022556784" }}</li>
+                        <li><i class="fas fa-envelope me-2"></i>{{ site.email|default:"molatech6784@gmail.com" }}</li>
+                    </ul>
+                </div>
+            </div>
+
+            <hr class="footer-divider">
+
+            <div class="text-center pb-4">
+                <small class="text-muted">
+                    &copy; <span id="year"></span>
+                    {{ site.site_name|default:"MOLA TECH Company" }}. All rights reserved.
+                    {{ site.tagline|default:"Building Future Minds" }}
+                </small>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========== BACK TO TOP ========== -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- ========== SCRIPTS ========== -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>window.bootstrap || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/js/bootstrap.bundle.min.js"><\/script>');</script>
+    <script src="{% static 'js/script.js' %}" onerror="document.documentElement.classList.remove('js')"></script>
+</body>
+
+</html>
