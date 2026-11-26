@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 from pathlib import Path
 import os
 
+import dj_database_url  # CHANGED: needed for DATABASE_URL parsing
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,13 +22,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ==========================================================
 # SECURITY
 # ==========================================================
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-9zfr)&l(rw(2%^+_^5xob!to=q#w=&$!88)^ozt=j-7jub-(h!'
+# CHANGED: read from environment in production, keep a fallback for local dev.
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY',
+    'django-insecure-9zfr)&l(rw(2%^+_^5xob!to=q#w=&$!88)^ozt=j-7jub-(h!'
+)
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# CHANGED: DEBUG is False in production (set DEBUG=False on Render).
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0', '*']
+# CHANGED: local hosts always allowed; on Render, allow *.onrender.com.
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0']
+if not DEBUG:
+    ALLOWED_HOSTS += ['.onrender.com']
 
 
 # ==========================================================
@@ -44,6 +52,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # CHANGED: moved up, right after SecurityMiddleware
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -75,24 +84,13 @@ WSGI_APPLICATION = 'myweb.wsgi.application'
 # ==========================================================
 # DATABASE
 # ==========================================================
+# CHANGED: SQLite locally, Postgres on Render (via DATABASE_URL env var).
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+        conn_max_age=600,
+    )
 }
-
-# MySQL example (uncomment to use):
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'USER': 'root',
-#         'PASSWORD': '<your-db-password>',
-#         'HOST': 'localhost',
-#         'PORT': '3306',
-#         'NAME': 'myapp',
-#     }
-# }
 
 
 # ==========================================================
@@ -156,3 +154,9 @@ LOGOUT_REDIRECT_URL = '/login/'         # after logout
 # DEFAULT AUTO FIELD (silences W042 warning in Django 4+)
 # ==========================================================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
